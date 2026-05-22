@@ -1,13 +1,8 @@
+
 pipeline {
     agent any
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/yadunandancodezilla-alt/Automation-Test.git'
-            }
-        }
 
         stage('Run Tests') {
             steps {
