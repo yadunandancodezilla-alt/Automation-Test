@@ -1,0 +1,5 @@
+jenkins.war
+venv/
+__pycache__/
+*.pyc
+report.html
