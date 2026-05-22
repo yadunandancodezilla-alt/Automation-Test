@@ -3,18 +3,12 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
-            steps {
-                git 'https://github.com/yadunandancodezilla-alt/Automation-Test.git'
-            }
-        }
-
-        stage('Install Dependencies') {
+        stage('Setup Environment') {
             steps {
                 sh '''
                 python3 -m venv venv
-                source venv/bin/activate 
-                pip install -r requirements.txt
+                . venv/bin/activate
+                pip install pytest pytest-html selenium
                 '''
             }
         }
@@ -22,15 +16,19 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                source venv/bin/activate
-                pytest --html=report.html --self-contained-html
+                . venv/bin/activate
+                pytest --html=report.html
                 '''
             }
         }
 
-        stage('Archive Report') {
+        stage('Publish Report') {
             steps {
-                archiveArtifacts artifacts: 'report.html', fingerprint: true
+                publishHTML([
+                    reportDir: '.',
+                    reportFiles: 'report.html',
+                    reportName: 'Automation Test Report'
+                ])
             }
         }
     }
